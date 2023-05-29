@@ -30,7 +30,7 @@ async fn handle(msg: Message, token: String) {
 
         _ = client
             .send_message(
-                msg.channel_id.into(),
+                "test-flow",
                 &serde_json::json!({
                     "content": body,
                 }),
