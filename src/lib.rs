@@ -1,6 +1,7 @@
 use discord_flows::{
     get_client, listen_to_event,
     model::{Message, MessageActivityKind},
+    Bot::Default,
 };
 use dotenv::dotenv;
 use std::env;
@@ -9,17 +10,19 @@ use std::env;
 #[tokio::main(flavor = "current_thread")]
 pub async fn run() {
     dotenv().ok();
-    let discord_token = env::var("discord_token").expect("Expected a bot token.");
 
-    listen_to_event(discord_token.clone(), move |msg| handle(msg, discord_token)).await;
+    listen_to_event(Default, |msg| async  {
+        handle(msg).await;
+    })
+    .await;
 }
 
-async fn handle(msg: Message, token: String) {
-    let client = get_client(token);
+async fn handle(msg: Message) {
+    let client = get_client(Default);
     // let channel_id = msg.channel_id;
     // let content = msg.content;
     // let discord_server = env::var("discord_server").unwrap_or("Vivian Hu's server".to_string());
-    let discord_channel = env::var("discord_channel").unwrap_or("general".to_string());
+    // let discord_channel = env::var("discord_channel").unwrap_or("general".to_string());
 
     if msg.author.bot {
         return;
